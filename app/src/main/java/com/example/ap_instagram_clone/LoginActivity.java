@@ -2,6 +2,7 @@ package com.example.ap_instagram_clone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,25 +46,36 @@ public class LoginActivity extends AppCompatActivity {
 
         }
         else {
+            final ProgressDialog progressBar = new ProgressDialog(this);
+            progressBar.setMessage("Loging in... ");
+            progressBar.show();
             try {
                 ParseUser.logInInBackground(login_email.getText().toString(), login_password.getText().toString(), new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException e) {
                         if (user != null && e == null) {
+                            progressBar.dismiss();
+                            openSocialMediaActivity();
                             FancyToast.makeText(LoginActivity.this, user.getUsername()
-                                    + " is logged in successfully", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                                    + " logged in successfully", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                        }else {
+                            progressBar.dismiss();
+                            FancyToast.makeText(LoginActivity.this, e.getMessage().toString(), FancyToast.LENGTH_LONG,
+                                    FancyToast.ERROR, false).show();
+                            Log.d("ERROR", e.getLocalizedMessage());
                         }
-
-                        openSocialMediaActivity();
                     }
                 });
             } catch (Exception e) {
+                FancyToast.makeText(LoginActivity.this, e.getMessage().toString(), FancyToast.LENGTH_LONG,
+                        FancyToast.ERROR, false).show();
                 Log.d("ERROR", e.getLocalizedMessage());
             }
         }
     }
     public void SignUp(View view){
         Intent intent=new Intent(LoginActivity.this,SignUpActivity.class);
+        startActivity(intent);
     }
     public void hideKeyboard(View view){
         try {
