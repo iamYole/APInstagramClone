@@ -104,7 +104,7 @@ public class SharePictureTab extends Fragment  {
                     ParseObject parseObject = new ParseObject("Photo");
                     parseObject.put("picture", parseFile);
                     parseObject.put("image_desc", descText.getText().toString());
-                    parseObject.put("usernam", ParseUser.getCurrentUser().getUsername());
+                    parseObject.put("username", ParseUser.getCurrentUser().getUsername());
 
                     final ProgressDialog progressDialog = new ProgressDialog(getContext());
                     progressDialog.setMessage("Saving image...");
